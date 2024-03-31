@@ -1,0 +1,130 @@
+#MATH
+import math
+#1
+a = 1
+b = -3
+c = 2
+discriminant = b**2 - 4*a*c
+x1 = (-b + math.sqrt(discriminant)) / (2*a)
+x2 = (-b - math.sqrt(discriminant)) / (2*a)
+print("x1 = ", x1)
+print("x2 = ", x2)
+from math import pi
+#2
+r = 5
+S = pi * r**2
+print("Площадь круга = ", S)
+#COUNTER
+from collections import Counter
+#1
+array = [1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+count = []
+for key, value in Counter(array).items():
+    if value == 1:
+        count.append(key)
+print(count)
+#2
+n = int(input())    # количество чисел в массиве
+a = [int(i) for i in input().split()]
+counter = Counter(a)
+
+if len(counter) == n:
+    print("Все элементы массива различны")
+else:
+    result = a[0]
+    max_count = counter[result]
+    for number, count in counter.items():
+        if count > max_count or (count == max_count and number > result):
+            result = number
+            max_count = count
+    print(result)
+#ITERTOOLS
+import itertools
+#1
+k = 0
+a = list(itertools.product("атом", repeat=5))
+for x in a:
+    if x.count("м") == 1:
+        k += 1
+print(k)
+#2
+a = list(itertools.permutations("НЕБО"))
+print(len(set(a)))
+#CYCLE
+from itertools import cycle
+#1
+def infinite(lst, tries):
+    result = ''
+    iter_lst = cycle(lst)
+    if lst:
+        for _ in range(tries):
+            result += str(next(iter_lst))
+    return result
+
+print(infinite([2, 5, 8], 7))
+print(infinite([], 1000))
+print(infinite([7], 4))
+#JSON
+import json
+with open('C:\\Users\\ikkes\\Desktop\\books.json', 'r') as file:
+    books = json.load(file)
+long_books = [book for book in books if book['pageCount'] > 500]
+for book in long_books:
+    print(f"Название: {book.get('title')}")
+    print(f"Автор(ы): {', '.join(book.get('authors', []))}")
+    print(f"ISBN: {book.get('isbn')}")
+    print(f"Тематика: {book.get('categories')}")
+    print("______________")
+#CSV
+#1
+import csv
+
+with open("C:\\Users\\ikkes\\Desktop\\freshman_kgs.csv", mode="r") as file:
+    csv_reader = csv.reader(file)
+    header = next(csv_reader)
+
+    with open("result_kgs.csv", mode="w", newline="") as result_file:
+        csv_writer = csv.writer(result_file)
+        csv_writer.writerow(header + ["Weight diff"])
+
+        for row in csv_reader:
+            sex = row[0]
+            weight_diff = int(row[1]) - int(row[2])
+            bmi = float(row[4])
+
+            if sex == "M" and weight_diff >= 0 and bmi > 20.0:
+                weight_diff = str(weight_diff)
+                csv_writer.writerow(row + [weight_diff])
+
+print("Результаты сохранены в файле result_kgs.csv")
+
+import csv
+#2
+rows = []
+with open('C:\\Users\\ikkes\\Desktop\\homes.csv', mode="r", newline="") as file:
+    csv_reader = csv.reader(file)
+    for row in csv_reader:
+        rows.append(row)
+
+total_cost = 0
+count = 0
+for row in rows[1:]:
+    if len(row) > 3 and int(row[3]) == 8:
+        sell_price = int(row[0])
+        taxes = int(row[8])
+        total_cost += (sell_price * 1000 + taxes)
+        count += 1
+
+avg_cost = total_cost / count
+
+filtered_rows = [rows[0]]
+for row in rows[1:]:
+    if len(row) > 8 and int(row[0]) > 180 and int(row[8]) < 3500:
+        filtered_rows.append(row)
+
+with open("result_homes.csv", mode="w", newline="") as new_file:
+    writer = csv.writer(new_file)
+    for row in filtered_rows:
+        writer.writerow(row)
+
+print(f"Средняя итоговая стоимость дома с восемью комнатами: {avg_cost} долларов")
