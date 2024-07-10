@@ -1,0 +1,185 @@
+# from itertools import groupby
+#
+# words = [
+#     {'lemma': 'cake', "pos": "NOUN"},
+#     {'lemma': 'run', 'pos': 'VERB'},
+#     {'lemma': 'cow', 'pos': 'NOUN'},
+#     {'lemma': 'hear', 'pos': 'VERB'}
+# ]
+#
+# # Функция для получения части речи слова
+# def get_pos(word):
+#     return word['pos']
+#
+# # Сортировка списка слов по части речи
+# sorted_words = sorted(words, key=get_pos)
+#
+# # Группировка слов по части речи и вывод
+# for pos, group in groupby(sorted_words, key=get_pos):
+#     print(pos)
+#     for word in group:
+#         print("  ", word['lemma'])
+# import re
+# text = "A, very very; irregular_sentence"
+# result = re.sub(r'\W+', ' ', text)
+# x = result.replace('_', ' ')
+# print(x)
+#
+# import re
+#
+# def clean_text(text):
+#     text = re.sub(r'http\S+', '', text)
+#     text = re.sub(r'\B@\w+', '', text)
+#     text = re.sub(r'\#\w+', '', text)
+#     text = re.sub(r'RT|cc:', '', text)
+#     text = re.sub(r'\W+', ' ', text)
+#     return text.strip()
+#
+# text = "Good advice! RT @TheNextWeb: What I would do differently if I was learning to code today https://t.co/lbwej0pxOd cc: @garybernhardt #rstats"
+# print(clean_text(text))
+# sentence = "A, very very; irregular_sentence"
+# print(" ".join(re.split('[;,\s_]+', sentence)))
+# import json
+#
+# # Создаем словарь данных
+# data = {
+#     "name": "John",
+#     "age": 30,
+#     "city": "New York"
+# }
+#
+# # Преобразуем словарь в JSON-строку
+# json_string = json.dumps(data)
+# print("JSON-строка:")
+# print(json_string)
+#
+# # Преобразуем JSON-строку в словарь
+# parsed_data = json.loads(json_string)
+# print("\nСловарь:")
+# print(parsed_data)
+#
+# # Доступ к элементам словаря
+# print("\nИмя:", parsed_data["name"])
+# print("Возраст:", parsed_data["age"])
+# print("Город:", parsed_data["city"])
+# def save_load_and_print_data(data, filename):
+#     with open(filename, "w") as f:
+#         json.dump(data, f, indent=4)
+#     with open(filename, "r") as f:
+#         parsed_data = json.load(f)
+#     for i, j in parsed_data.items():
+#         print(f'Key {i} include {j}')
+# def get_sentiment(text, annotations):
+#     sentiment_score = 0
+#     for entity in annotations["entities"]:
+#         if entity["label"] == "Positive Sentiment":
+#             sentiment_score += 1
+#         elif entity["label"] == "Negative Sentiment":
+#             sentiment_score -= 1
+#     if sentiment_score > 0:
+#         return "Positive"
+#     elif sentiment_score < 0:
+#         return "Negative"
+#     else:
+#         return "Neutral"
+# def display_metadata(metadata):
+#     source = metadata.get("source", "")
+#     language = metadata.get("language", "")
+#     date = metadata.get("date", "")
+#
+#     print(f"The text was taken from {source}, in {language} language, on {date}.")
+# def count_tokens(tokens):
+#     token_count = {}
+#     for token in tokens:
+#         if token in token_count:
+#             token_count[token] += 1
+#         else:
+#             token_count[token] = 1
+#     print("Token frequencies:")
+#     for token, count in token_count.items():
+#         print(f"{token}: {count}")
+#
+# nlp_data = {
+#     "text": "Natural Language Processing is fascinating. Study",
+#     "tokens": ["Natural", "Language", "Processing", "is", "fascinating", ".", "Study"],
+#     "annotations": {
+#         "entities": [
+#             {"text": "Natural Language Processing", "label": "Technology"},
+#             {"text": "fascinating", "label": "Positive Sentiment"},
+#         ]
+#     },
+#     "metadata": {
+#         "source": "Wikipedia",
+#         "language": "English",
+#         "date": "2021-10-20"
+#     }
+# }
+# new_entity = {"text": "study", "label": "Education"}
+# nlp_data["annotations"]["entities"].append(new_entity)
+# new_date = "2023-03-15"
+# nlp_data["metadata"]["date"] = new_date
+# print(nlp_data)
+# save_load_and_print_data(nlp_data, "data2.json")
+# sentiment = get_sentiment(nlp_data["text"], nlp_data["annotations"])
+# print(sentiment)
+# display_metadata(nlp_data["metadata"])
+# count_tokens(nlp_data["tokens"])
+# import csv
+# data = [
+#     ['Name', 'Age', 'City'],
+#     ['John','30','New York'],
+#     ['Alice','25','San Francisco'],
+#     ['Bob','35','Chicago']
+# ]
+# with open('output.csv', 'w', newline='') as f:
+#     csv_writer = csv.writer(f)
+#     for row in data:
+#         csv_writer.writerow(row)
+# with open('output2.csv', 'r') as f:
+#     csv_reader = csv.reader(f)
+#     for row in csv_reader:
+#         print(row)
+# print(type(csv_reader))
+#
+#
+#
+#
+#
+# classification_results = [
+#     {"Text": "This product is excellent.", "Category": "Positive"},
+#     {"Text": "The service was poor.", "Category": "Negative"},
+#     {"Text": "I am satisfied with the outcome.", "Category": "Positive"}
+# ]
+#
+# def preprocess_text(text):
+#     text = text.translate(str.maketrans("", "", string.punctuation))
+#     text = text.lower()
+#     text = re.sub(r'\d+', '', text)
+#     text = ' '.join(text.split())
+#     return text
+#
+# def count_words(text):
+#     return len(text.split())
+#
+# def write_to_csv(results, filename):
+#     with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+#         fieldnames = ['Text', 'Category', 'WordCount']
+#         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+#         writer.writeheader()
+#         for row in results:
+#             row['Text'] = preprocess_text(row['Text'])
+#             row['WordCount'] = count_words(row['Text'])
+#             writer.writerow(row)
+#
+# def count_sentiments(results):
+#     sentiment_count = {'Positive': {'Positive': 0, 'Negative': 0}, 'Negative': {'Positive': 0, 'Negative': 0}}
+#     for result in results:
+#         sentiment_count[result['Category']][result['Category']] += 1
+#     return sentiment_count
+#
+# sentiment_count = count_sentiments(classification_results)
+# print("Sentiment count:")
+# for category, counts in sentiment_count.items():
+#     print(f"{category}: {counts}")
+#
+# write_to_csv(classification_results, 'classification_results.csv')
