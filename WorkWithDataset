@@ -1,0 +1,77 @@
+# import pandas as pd
+# import string
+# file_path = 'appstore_instagram_reviews_anonymized.csv'
+# #1
+# dataset = pd.read_csv(file_path)
+# #2
+# print(dataset.dtypes)
+# #Это чтобы выводить все столбцы
+# pd.options.display.max_columns = None
+# pd.options.display.max_rows = None
+#3
+# nan_counts = (sum(pd.isnull(dataset[col])) for col in dataset.columns)
+# for col, count in zip(dataset.columns, nan_counts):
+#     print(f'In column "{col}" is {count} of NaN')
+# column_name = "country"
+# #5
+# nan_rows = (_ for _, row in dataset.iterrows() if pd.isnull(row[column_name]))
+# print(f'In column "{column_name}" NaN values are in rows:')
+# for row in nan_rows:
+#     print(row)
+# most_common = dataset[column_name].mode()[0]
+# dataset[column_name] = dataset[column_name].fillna(most_common)
+# print(dataset.head())
+# #4
+# dataset = dataset.dropna()
+# print(dataset.head())
+# #2
+# text_col = 'title'
+# label_col = 'score'
+# text_data = dataset[text_col]
+# label_data = dataset[label_col]
+# print(text_data.head(), label_data.head())
+# #8
+# start_date = pd.to_datetime('2000-01-01')
+# date_range = pd.date_range(start_date, periods=len(dataset), freq='D')
+# dataset['date1'] = date_range
+# dataset['date1'] = dataset['date1'].dt.strftime('%Y.%m.%d')
+# #7
+# mean_value = dataset[label_col].mean()
+# filtered_dataset = dataset[dataset[label_col] > mean_value]
+#10
+# dataset.columns = ["_appId", "_country", "_date", "_date1", "_id", "_score", "_text", "_title", "_url", "_userName", "_userUrl", "_version"]
+#9
+# del dataset['_userName']
+# print(filtered_dataset)
+# #7, 6
+# print(label_data.describe())
+# print(dataset.columns)
+#Посчитать среднюю оценку пользователей из Германии
+# de_dataset = dataset[dataset['country'] == 'DE']
+# mean_rating = de_dataset['score'].mean()
+# print("In Germany mean rationg is", mean_rating)
+# #Найти все отзывы США с 10:00 до 12:00
+# dataset['date'] = pd.to_datetime(dataset['date'])
+# dataset['time'] = dataset['date'].dt.time
+# usa_dataset = dataset[(dataset['country'] == 'US') & (dataset['time'] >= pd.to_datetime('10:00:00').time()) & (dataset['time'] <= pd.to_datetime('12:00:00').time())]
+# print("All USA reviews from 10 to 12\n", usa_dataset)
+# #В какой стране наиболее высокая средняя оценка
+# mean_rating_by_country = dataset.groupby('country')['score'].mean()
+# mean_rating_by_country = mean_rating_by_country.sort_values(ascending=False)
+# print("Countries sorted by their mean rating\n", mean_rating_by_country)
+# #В какой стране пишут наиболее длинные отзывы и какое слово там встречается наиболее часто?
+# dataset['text'] = dataset['text'].str.lower()
+# dataset['text'] = dataset['text'].apply(lambda x: x.translate(str.maketrans('', '', string.punctuation)))
+# dataset['length'] = dataset['text'].str.len()
+# mean_length_by_country = dataset.groupby('country')['length'].mean()
+# country_with_max_length = mean_length_by_country.idxmax()
+# selected_dataset = dataset[dataset['country'] == country_with_max_length]
+# words = []
+# for row in selected_dataset['text']:
+#     for word in row.split():
+#         if len(word) > 5:
+#             words.append(word)
+# word_counts = pd.Series(words).value_counts()
+# most_common_word = word_counts.index[0]
+# print('Страна с наиболее длинными отзывами:', country_with_max_length)
+# print('Наиболее часто встречающееся слово в отзывах этой страны:', most_common_word)
