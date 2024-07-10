@@ -71,7 +71,99 @@
 #     for word in row.split():
 #         if len(word) > 5:
 #             words.append(word)
+# import pandas as pd
+# import matplotlib.pyplot as plt
+# import numpy as np
+#
+# x = np.linspace(0, 10, 100)  # 100 точек от 0 до 10
+# y1 = np.sin(x)  # синусоидальная функция
+# y2 = np.cos(x)  # косинусоидальная функция
+#
+# fig, ax = plt.subplots(figsize=(8, 4), dpi=100)  # создание фигуры и осей
+# ax.plot(x, y1, color='red', label='sin(x)')  # добавление первого графика
+# ax.plot(x, y2, color='blue', label='cos(x)')  # добавление второго графика
+# ax.set_xlabel('x')  # название оси x
+# ax.set_ylabel('y')  # название оси y
+# ax.set_title('Графики синусоиды и косинусоиды')  # название графика
+# ax.legend()  # добавление легенды
+# plt.show()
+# data = {
+#     'Имя': ['Александр', 'Елена', 'Максим', 'Анна', 'Иван'],
+#     'Возраст': [20, 19, 22, 21, 20],
+#     'Пол': ['М', 'Ж', 'М', 'Ж', 'М'],
+#     'Математика': [85, 90, 78, 92, 88],
+#     'Физика': [80, 85, 75, 90, 85],
+#     'Химия': [75, 80, 70, 85, 80],
+# }
+# data = pd.read_csv('appstore_instagram_reviews_anonymized.csv')
+# data.plot(kind='bar', x='country', y='score')
+# #data = data.head()
+# de_dataset = data[data['country'] == 'DE']
+# plt.figure()
+# #f = plt.subplot(411)
+# plt.plot(de_dataset['score'])
+# #f = plt.subplot(414)
+# plt.plot(de_dataset['country'])
+# plt.legend(['SCORE', 'COUNTRY'])
+# data.hist()
+# plt.show()
 # word_counts = pd.Series(words).value_counts()
 # most_common_word = word_counts.index[0]
 # print('Страна с наиболее длинными отзывами:', country_with_max_length)
 # print('Наиболее часто встречающееся слово в отзывах этой страны:', most_common_word)
+# Анализ датасета
+# import pandas as pd
+# import numpy
+# import matplotlib.pyplot as plt
+#
+# data = pd.read_csv('climate_change_indicators.csv')
+# pd.options.display.max_columns = None
+# pd.options.display.max_rows = None
+# #1
+# #print(data.dtypes)
+# data.drop(['ObjectId', 'ISO2', 'ISO3', 'CTS_Code', 'CTS_Name',
+#            'CTS_Full_Descriptor', 'Source', 'Unit', 'Indicator'],
+#           axis=1, inplace=True)
+# data = data.dropna()
+# #2
+# max_temp_1975 = data.loc[data['F1975'] == data['F1975'].abs().max(), 'Country'].to_numpy()
+# min_temp_1975 = data.loc[data['F1975'] == data['F1975'].abs().min(), 'Country'].to_numpy()
+# print(f"Страна с самым высоким изменением температуры за 1975 год: {max_temp_1975}")
+# print(f"Страна с самым низким изменением температуры за 1975 год: {min_temp_1975}")
+#
+# max_temp_2015 = data.loc[data['F2015'] == data['F2015'].abs().max(), 'Country'].to_numpy()
+# min_temp_2015 = data.loc[data['F2015'] == data['F2015'].abs().min(), 'Country'].to_numpy()
+# print(f"Страна с самым высоким изменением температуры за 2015 год: {max_temp_2015}")
+# print(f"Страна с самым низким изменением температуры за 2015 год: {min_temp_2015}")
+# #3
+# data.iloc[:, 1:] = data.iloc[:, 1:].apply(pd.to_numeric)
+# data['change_all'] = data.iloc[:, -1] - data.iloc[:, 2]
+# data['change_two_years'] = data.iloc[:, 2:].diff(axis=1).abs().sum(axis=1)
+# top_10_all = data.nlargest(10, 'change_all')[['Country', 'change_all']]
+# top_10_two_years = data.nlargest(10, 'change_two_years')[['Country', 'change_two_years']]
+# print("\n10 стран с наибольшим изменением температуры за весь период:")
+# print(top_10_all)
+# print("\n10 стран с наибольшим изменением температуры за каждые два года:")
+# print(top_10_two_years)
+#
+# #4
+# fig, ax = plt.subplots(figsize=(10, 6))
+# ax.hist(data['change_all'], bins=50)
+# ax.set_xlabel('Изменение температуры')
+# ax.set_ylabel('Частота')
+# ax.set_title('Изменение температуры за весь период')
+# plt.show()
+#
+# countries = data['Country'][:15]
+# avg_temps = data.iloc[:, 5:].mean(axis=1)[:15]
+# plt.bar(countries, avg_temps)
+# plt.xlabel('Страна')
+# plt.ylabel('Среднее изменение температуры')
+# plt.show()
+#
+# print(data)
+# data.to_csv('out.csv', index=False)
+# #5. Температура в большинстве стран изменилась, причем в некоторых странах изменение было значительным.
+# # Так как у нас нет данных за 1960 год, нельзя сказать точно, что температура сравнивается с ним, но, проанализировав данные,
+# # можно сказать, что она точно не сравнивается с предыдущим годом, потому что есть тенденция на повышение, и ближе к концу данных, можно увидеть
+# # что значения, по большей части, увеличиваются
