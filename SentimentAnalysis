@@ -1,0 +1,82 @@
+# import nltk
+# import pandas as pd
+# #nltk.download('stopwords')
+# from nltk.corpus import stopwords
+# from pymystem3 import Mystem
+# from string import punctuation
+# from rutermextract import TermExtractor
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# from sklearn.decomposition import TruncatedSVD
+# import numpy as np
+# from sklearn.model_selection import train_test_split
+# from sklearn.ensemble import RandomForestClassifier
+
+# mystem = Mystem()
+# ru_stop = stopwords.words('russian')
+# def prepocess_text(line):
+#     tokens = mystem.lemmatize(line.lower())
+#     clean_tokens = []
+#     for token in tokens:
+#         if token not in ru_stop and token != " " and token.strip() not in punctuation:
+#             clean_tokens.append(token)
+#     line = " ".join(clean_tokens)
+#     return line
+# def cleaner(line):
+#   try:
+#     line = line.replace('rating=', '')
+#     line = line.replace('rubrics=', '')
+#     line = line.replace('text=', '')
+#     line = line.replace(r'\n', ' ')
+#   except:
+#     pass
+#   return line
+# term_extractor = TermExtractor()
+# def keywords(line):
+#     terms = []
+#     for term in term_extractor(line):
+#         terms.append(term.normalized)
+#     return ",-".join(terms)
+#
+# df = pd.read_csv('geo-reviews-dataset-2023.tskv', sep='\t', names=['address', 'name', 'rating', 'rubrics', 'text'], header=None)
+# pd.options.display.max_columns = None
+# pd.options.display.max_rows = None
+# df = df.dropna()
+# df.drop(['address', 'name'], axis=1, inplace=True)
+# df['rating'] = df['rating'].apply(cleaner)
+# df['rubrics'] = df['rubrics'].apply(cleaner)
+# df['text'] = df['text'].apply(cleaner)
+# sample = df.sample(100)
+# sample['cleaned_text'] = sample['text'].apply(prepocess_text)
+# sample['_keywords'] = sample['cleaned_text'].apply(keywords)
+# sample1 = sample['cleaned_text'].tolist()
+# vectorizer = TfidfVectorizer()
+# tfidf_matrix = vectorizer.fit_transform(sample1)
+# n_components = 5
+# lsa = TruncatedSVD(n_components)
+# lsa_matrix = lsa.fit_transform(tfidf_matrix)
+# terms = np.array(vectorizer.get_feature_names_out())
+# for i, topic in enumerate(lsa.components_):
+#     top_terms_idx = topic.argsort()[-5:][::-1]
+#     top_terms = terms[top_terms_idx]
+#     print(f'Тема {i+1}: {",".join(top_terms)}')
+# df = df.loc[(df['rating'] == "5.") | (df['rating'] == "1.")]
+#
+# n = 34298
+# positive = df[df['rating'] == '5.'].iloc[:n]
+# negative = df[df['rating'] == '1.']
+# df = pd.concat([positive, negative])
+# a = df['rating'].value_counts()
+# print(a)
+#
+#
+# train_data, test_data, train_labels, test_labels = train_test_split(df['text'], df['rating'], test_size=0.25)
+# vectorizer = TfidfVectorizer()
+# X_train = vectorizer.fit_transform(train_data)
+# X_test = vectorizer.fit_transform(test_data)
+# random_forest_model = RandomForestClassifier(n_estimators=100)
+# random_forest_model.fit(X_train, train_labels)
+# rf_predictions = random_forest_model.predict(X_test)
+# print(rf_predictions)
+# print(test_labels)
+
+#print(lsa_matrix)
